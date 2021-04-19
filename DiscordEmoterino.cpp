@@ -5,8 +5,8 @@
 #include <tchar.h>
 
 const wchar_t* DiscordProcessName = L"Discord.exe";
-const int FindProcessDelay = 250;
-const int ControlCheckDelay = 10;
+const int FindProcessDelay = 300;
+const int ControlCheckDelay = 20;
 const int OperationDelay = 5;
 
 bool _isExecuting = false;
