@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Batch Files">
+      <UniqueIdentifier>{b6f001c8-c049-4bfc-94cf-39ddc3790256}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DiscordEmoterino.cpp">
@@ -33,5 +36,16 @@
     <Image Include="Assets\Logo.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="BatchFiles\DisableRunOnStartup.bat">
+      <Filter>Batch Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="BatchFiles\EnableRunOnStartup.bat">
+      <Filter>Batch Files</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="BatchFiles\ExitDiscordEmoterino.bat">
+      <Filter>Batch Files</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>
