@@ -3,7 +3,7 @@ A lightweight program that separates emotes from your messages on Discord
 
 ![DiscordEmoterinoDemo2](https://user-images.githubusercontent.com/16715946/115314822-90273b80-a1a8-11eb-93a1-fc3b6599b770.gif)
 
-## Download Latest Release
+## Download (Windows)
 
 https://github.com/Aayzie/DiscordEmoterino/releases/tag/1.0.0.1
 
