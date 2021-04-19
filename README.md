@@ -3,6 +3,10 @@ A lightweight program that separates emotes from your messages
 
 ![DiscordEmoterinoDemo](https://user-images.githubusercontent.com/16715946/115309172-800a5e80-a19e-11eb-9187-91cdb21cca78.gif)
 
+## Download Latest Release
+
+https://github.com/Aayzie/DiscordEmoterino/releases/tag/1.0.0.1
+
 ## Instructions
 -Run <b>DiscordEmoterino.exe</b> to manually start the program.
 
@@ -30,4 +34,8 @@ For example, in order for the program to know that <b>forsenLUL</b> is an emote,
 
 -You can manually check if the program is on <b>System Startup</b> by opening the <b>Registry Editor</b> and then going to <b>"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"</b>
 
--Feel free to let me know if you have any problems, even problems not related to this program <3.
+-Feel free to let me know if you experience any problems with the program.
+
+## これはウイルスですか？
+
+いいえ。公式リリースのファイルが信頼できない場合は、自分でコンパイルできます。
