@@ -78,7 +78,7 @@ BEGIN
         BLOCK "000904b0"
         BEGIN
             VALUE "CompanyName", "Aayzie"
-            VALUE "FileDescription", "Separate emotes from your messages"
+            VALUE "FileDescription", "Discord Emoterino"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "DiscordEmoterino.exe"
             VALUE "LegalCopyright", "Copyright (C) 2021"

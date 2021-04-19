@@ -91,7 +91,7 @@ void ShowAlreadyExistsBox ()
 
 void ShowStartBox ()
 {
-    MessageBox (nullptr, TEXT ("Discord Emoterino is now running~!"), TEXT ("Discord Emoterino"), MB_OK);
+    MessageBox (nullptr, TEXT ("Discord Emoterino is now running~!\n\nYou may exit this program by running \"ExitDiscordEmoterino.bat\".\nIf you haven't yet, please read \"ReadMe.txt\"!"), TEXT ("Discord Emoterino"), MB_OK);
 }
 
 void LoadEmotePrefixes ()
@@ -187,7 +187,14 @@ void Emoterize ()
 
         lastWord = word;
     }
-    EnterMessage (lastWord);
+    if (parsedMessage.length () > 0)
+    {
+        EnterMessage (parsedMessage);
+    }
+    else
+    {
+        EnterMessage (lastWord);
+    }
 
     LoadClipboardText ();
 }
@@ -304,6 +311,10 @@ bool IsEmote (std::string text)
 
 bool IsPrefix (std::string text, std::string prefix)
 {
+    if (text == prefix)
+    {
+        return false;
+    }
     return text.rfind (prefix, 0) == 0;
 }
 

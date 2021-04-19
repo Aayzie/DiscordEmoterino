@@ -48,4 +48,7 @@
       <Filter>Batch Files</Filter>
     </CopyFileToFolders>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\EmotePrefixes.txt" />
+  </ItemGroup>
 </Project>

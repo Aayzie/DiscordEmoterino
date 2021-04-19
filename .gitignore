@@ -1,5 +1,7 @@
 # Assets
-Assets/
+ReadMe.txt
+*.png
+*.psd
 
 # User-specific files
 *.rsuser
@@ -330,3 +332,6 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+*.gif
+*.stg
+Assets/EmotePrefixes.txt
