@@ -1,41 +1,57 @@
+#include <fstream>
 #include <iostream>
-#include <windows.h>
-#include <thread>
-#include <tlhelp32.h>
+#include <string>
 #include <tchar.h>
+#include <thread>
+#include <windows.h>
+#include <tlhelp32.h>
+#include <vector>
+#include <sstream>
 
 const wchar_t* DiscordProcessName = L"Discord.exe";
+const char* EmotePrefixesFileName = "EmotePrefixes.txt";
 const int FindProcessDelay = 300;
 const int ControlCheckDelay = 20;
 const int OperationDelay = 5;
 
-bool _isExecuting = false;
+HANDLE mutex;
+
+std::vector<std::string> _emotePrefixes;
 std::string _savedClipboardText = "";
 
+void ShowAlreadyExistsBox ();
 void ShowStartBox ();
+void LoadEmotePrefixes ();
 bool IsDiscordFocused ();
 
-void Update ();
+void Emoterize ();
 void LoadClipboardText ();
 void SaveClipboardText ();
 std::string GetOriginalMessage ();
-int GetPreEmotes (const std::string& message, std::string& preEmotes);
-int GetPostEmotes (const std::string& message, std::string& postEmotes);
-const std::string GetTrimmedMessage (std::string message, int preEmotesLastIndex, int postEmotesLastIndex);
-void PostMessagesSequentially (const std::string& preEmotes, const std::string& trimmedMessage, const std::string& postEmotes);
 
 std::string GetClipboardText ();
 void SetClipboardText (const std::string& text);
-void TrimEnd (std::string& text);
-void PostMessage (const std::string& text);
+void EnterMessage (const std::string& text);
 
-int main(int argc, char* argv[])
+bool IsFileExists (const char* fileName);
+bool IsEmote (std::string text);
+bool IsPrefix (std::string text, std::string prefix);
+void TrimEnd (std::string& text);
+
+int main (int argc, char* argv[])
 {
+    mutex = CreateMutex (NULL, TRUE, L"DiscordEmoterino");
+    if (GetLastError () == ERROR_ALREADY_EXISTS)
+    {
+        ShowAlreadyExistsBox ();
+        return 0;
+    }
+
     bool noStartBox = false;
 
     for (int i = 0; i < argc; ++i)
     {
-        if (std::string(argv[i]).compare("-nostartbox") == 0)
+        if (std::string (argv[i]).compare ("-nostartbox") == 0)
         {
             noStartBox = true;
         }
@@ -47,6 +63,8 @@ int main(int argc, char* argv[])
         showStartBoxThread = std::thread (ShowStartBox);
     }
 
+    LoadEmotePrefixes ();
+
     while (true)
     {
         if (GetAsyncKeyState (VK_CONTROL) >= 0 || GetAsyncKeyState (VK_RETURN) >= 0)
@@ -57,16 +75,39 @@ int main(int argc, char* argv[])
 
         if (IsDiscordFocused ())
         {
-            Update ();
+            Emoterize ();
         }
 
         Sleep (FindProcessDelay);
     }
+
+    CloseHandle (mutex);
+}
+
+void ShowAlreadyExistsBox ()
+{
+    MessageBox (nullptr, TEXT ("Discord Emoterino is already running!"), TEXT ("Discord Emoterino"), MB_OK);
 }
 
 void ShowStartBox ()
 {
     MessageBox (nullptr, TEXT ("Discord Emoterino is now running~!"), TEXT ("Discord Emoterino"), MB_OK);
+}
+
+void LoadEmotePrefixes ()
+{
+    if (IsFileExists (EmotePrefixesFileName))
+    {
+        std::string emotePrefix;
+        std::ifstream inFile;
+        inFile.open (EmotePrefixesFileName);
+        while (!inFile.eof ())
+        {
+            std::getline (inFile, emotePrefix);
+            _emotePrefixes.push_back (emotePrefix);
+        }
+        inFile.close ();
+    }
 }
 
 bool IsDiscordFocused ()
@@ -98,7 +139,7 @@ bool IsDiscordFocused ()
     return false;
 }
 
-void Update ()
+void Emoterize ()
 {
     SaveClipboardText ();
 
@@ -110,15 +151,43 @@ void Update ()
         return;
     }
 
-    std::string preEmotes = "";
-    int preEmotesLastIndex = GetPreEmotes (message, preEmotes);
+    bool isFirstWord = true;
+    bool isGettingEmotes = false;
+    std::string parsedMessage = "";
+    std::string lastWord = "";
+    std::stringstream ss (message);
+    std::string word;
+    while (ss >> word)
+    {
+        if (IsEmote (word))
+        {
+            if (!isGettingEmotes && !isFirstWord)
+            {
+                EnterMessage (parsedMessage);
+                parsedMessage = "";
+            }
+            isGettingEmotes = true;
+            parsedMessage += word + " ";
+        }
+        else
+        {
+            if (isGettingEmotes && !isFirstWord)
+            {
+                EnterMessage (parsedMessage);
+                parsedMessage = "";
+            }
+            isGettingEmotes = false;
+            parsedMessage += word + " ";
+        }
 
-    std::string postEmotes = "";
-    int postEmotesLastIndex = GetPostEmotes (message, postEmotes);
+        if (isFirstWord)
+        {
+            isFirstWord = false;
+        }
 
-    const std::string trimmedMessage = GetTrimmedMessage (message, preEmotesLastIndex, postEmotesLastIndex);
-
-    PostMessagesSequentially (preEmotes, trimmedMessage, postEmotes);
+        lastWord = word;
+    }
+    EnterMessage (lastWord);
 
     LoadClipboardText ();
 }
@@ -148,99 +217,6 @@ std::string GetOriginalMessage ()
     Sleep (OperationDelay);
 
     return GetClipboardText ();
-}
-
-int GetPreEmotes (const std::string& message, std::string& preEmotes)
-{
-    int preEmotesLastIndex = 0;
-
-    if (message[0] != ':')
-    {
-        return preEmotesLastIndex;
-    }
-
-    bool isGettingEmote = true;
-    int emoteBeginIndex = 0;
-    for (int i = 1; i < message.length (); i++)
-    {
-        if (isGettingEmote && message[i] == ':')
-        {
-            preEmotes += message.substr (emoteBeginIndex, i - emoteBeginIndex + 1) + " ";
-            preEmotesLastIndex = i + 1;
-            isGettingEmote = false;
-        }
-        else if (!isGettingEmote)
-        {
-            if (message[i] != ':' && !isspace (message[i]))
-            {
-                break;
-            }
-            else if (message[i] == ':')
-            {
-                emoteBeginIndex = i;
-                isGettingEmote = true;
-            }
-        }
-    }
-
-    return preEmotesLastIndex;
-}
-
-int GetPostEmotes (const std::string& message, std::string& postEmotes)
-{
-    int postEmotesLastIndex = message.length ();
-
-    if (message[message.length () - 1] != ':')
-    {
-        return postEmotesLastIndex;
-    }
-
-    bool isGettingEmote = true;
-    int emoteEndIndex = message.length () - 1;
-    for (int i = message.length () - 2; i >= 0; i--)
-    {
-        if (isGettingEmote && message[i] == ':')
-        {
-            postEmotes += message.substr (i, emoteEndIndex - i + 1) + " ";
-            postEmotesLastIndex = i;
-            isGettingEmote = false;
-        }
-        else if (!isGettingEmote)
-        {
-            if (message[i] != ':' && !isspace (message[i]))
-            {
-                break;
-            }
-            else if (message[i] == ':')
-            {
-                emoteEndIndex = i;
-                isGettingEmote = true;
-            }
-        }
-    }
-
-    return postEmotesLastIndex;
-}
-
-const std::string GetTrimmedMessage (std::string message, int preEmotesLastIndex, int postEmotesLastIndex)
-{
-    return message.substr (preEmotesLastIndex, postEmotesLastIndex - preEmotesLastIndex) + " ";
-}
-
-void PostMessagesSequentially (const std::string& preEmotes, const std::string& trimmedMessage, const std::string& postEmotes)
-{
-    if (preEmotes.size () > 0)
-    {
-        PostMessage (preEmotes);
-        Sleep (OperationDelay);
-    }
-    PostMessage (trimmedMessage);
-    Sleep (OperationDelay);
-    if (preEmotes != postEmotes && postEmotes.size () > 0)
-    {
-        PostMessage (postEmotes);
-        Sleep (OperationDelay);
-    }
 }
 
 std::string GetClipboardText ()
@@ -276,15 +252,7 @@ void SetClipboardText (const std::string& text)
     GlobalFree (hg);
 }
 
-void TrimEnd (std::string& text)
-{
-    text.erase (std::find_if (text.rbegin (), text.rend (), [] (unsigned char ch)
-    {
-        return !isspace (ch);
-    }).base (), text.end ());
-}
-
-void PostMessage (const std::string& message)
+void EnterMessage (const std::string& message)
 {
     SetClipboardText (message);
 
@@ -301,4 +269,48 @@ void PostMessage (const std::string& message)
 
     keybd_event (VK_RETURN, 0x9C, 0, 0);
     keybd_event (VK_RETURN, 0x9C, KEYEVENTF_KEYUP, 0);
+
+    Sleep (OperationDelay);
+}
+
+bool IsFileExists (const char* fileName)
+{
+    std::ifstream infile (fileName);
+    return infile.good ();
+}
+
+bool IsEmote (std::string text)
+{
+    if (text.length () == 0)
+    {
+        return false;
+    }
+    if ((text[0] == ':' && text[text.length () - 1] == ':'))
+    {
+        return true;
+    }
+    else
+    {
+        for (std::string& prefix : _emotePrefixes)
+        {
+            if (IsPrefix (text, prefix))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool IsPrefix (std::string text, std::string prefix)
+{
+    return text.rfind (prefix, 0) == 0;
+}
+
+void TrimEnd (std::string& text)
+{
+    text.erase (std::find_if (text.rbegin (), text.rend (), [] (unsigned char ch)
+        {
+            return !isspace (ch);
+        }).base (), text.end ());
 }
