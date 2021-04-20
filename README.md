@@ -36,7 +36,7 @@ For example, in order for the program to know that <b>forsenLUL</b> is an emote,
 
 -You can manually check if the program is on <b>System Startup</b> by opening the <b>Registry Editor</b> and then going to <b>"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"</b>
 
--Feel free to let me know if you experience any problems with the program.
+-Feel free to let me know if you encounter a bug or something.
 
 ## これはウイルスですか？
 
