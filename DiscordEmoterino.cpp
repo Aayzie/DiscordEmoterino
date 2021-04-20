@@ -91,7 +91,7 @@ void ShowAlreadyExistsBox ()
 
 void ShowStartBox ()
 {
-    MessageBox (nullptr, TEXT ("Discord Emoterino is now running~!\n\nYou may exit this program by running \"ExitDiscordEmoterino.bat\".\nIf you haven't yet, please read \"ReadMe.txt\"!"), TEXT ("Discord Emoterino"), MB_OK);
+    MessageBox (nullptr, TEXT ("Discord Emoterino is now running~!\n\nSend your message on Discord while holding down the CTRL key to separate the emotes from your message.\n\nYou may exit this program by running \"ExitDiscordEmoterino.bat\".\n\nIf you haven't yet, please read \"ReadMe.txt\"!\nThank you!~"), TEXT ("Discord Emoterino"), MB_OK);
 }
 
 void LoadEmotePrefixes ()
