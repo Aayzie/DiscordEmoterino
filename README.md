@@ -1,20 +1,20 @@
 # Discord Emoterino
-A lightweight program that separates emotes from your messages on Discord
+A lightweight, seamless program that separates emotes from your messages on Discord
 
 ![DiscordEmoterinoDemo3](https://user-images.githubusercontent.com/16715946/115318781-06c83700-a1b1-11eb-946a-576c109d194d.gif)
 
-## Download (Windows)
+## Download (Windows-only)
 
 https://github.com/Aayzie/DiscordEmoterino/releases/tag/1.0.0.1
 
 ## Instructions
 Run <b>DiscordEmoterino.exe</b> to manually start the program.
 
-Run <b>ExitDiscordEmoterino.bat</b> to manually quit the program.
+Run <b>ExitDiscordEmoterino.bat</b> to quit the program.
 
-Run <b>EnableRunOnStartup.bat</b> to have this program run on System Startup.
+Run <b>EnableRunOnStartup.bat</b> to have this program run on system startup.
 
-Run <b>DisableRunOnStartup.bat</b> to remove it from System Startup.
+Run <b>DisableRunOnStartup.bat</b> to remove it from system startup.
 
 ### Usage
 
@@ -25,8 +25,8 @@ The Arrow Up emote should be sent first, then "TESTING MESSAGE", then the Arrow 
 
 ### Prefix Emotes
 
-If you want to use emotes that start with a prefix instead of two colons, specify the prefix in <b>EmotePrefixes.txt</b> in the same folder as the executable file.
-For example, in order for the program to know that <b>forsenLUL</b> is an emote, you must put <b>"forsen"</b> in <b>EmotePrefixes.txt</b>.
+If you want to use emotes that start with a prefix instead of a colon, specify the prefix in <b>EmotePrefixes.txt</b> in the same folder as the executable file.
+e.g. in order for the program to know that <b>forsenLUL</b> is an emote, you must put <b>"forsen"</b> in <b>EmotePrefixes.txt</b>.
 
 ## Notes
 
@@ -34,10 +34,6 @@ For example, in order for the program to know that <b>forsenLUL</b> is an emote,
 
 -You can manually check if the program is running by searching for <b>DiscordEmoterino.exe</b> in <b>Task Manager</b>.
 
--You can manually check if the program is on <b>System Startup</b> by opening the <b>Registry Editor</b> and then going to <b>"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"</b>
+-You can manually check if the program is on <b>system startup</b> by opening the <b>Registry Editor</b> and then going to <b>"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"</b>
 
 -Feel free to let me know if you encounter a bug or something.
-
-## これはウイルスですか？
-
-いいえ。公式リリースのファイルが信頼できない場合は、自分でコンパイルできます。
