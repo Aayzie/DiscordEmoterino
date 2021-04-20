@@ -34,8 +34,8 @@ void SetClipboardText (const std::string& text);
 void EnterMessage (const std::string& text);
 
 bool IsFileExists (const char* fileName);
-bool IsEmote (std::string text);
-bool IsPrefix (std::string text, std::string prefix);
+bool IsEmote (const std::string text);
+bool IsPrefix (const std::string text, const std::string prefix);
 void TrimEnd (std::string& text);
 
 int main (int argc, char* argv[])
@@ -286,7 +286,7 @@ bool IsFileExists (const char* fileName)
     return infile.good ();
 }
 
-bool IsEmote (std::string text)
+bool IsEmote (const std::string text)
 {
     if (text.length () == 0)
     {
@@ -309,7 +309,7 @@ bool IsEmote (std::string text)
     return false;
 }
 
-bool IsPrefix (std::string text, std::string prefix)
+bool IsPrefix (const std::string text, const std::string prefix)
 {
     if (text == prefix)
     {
