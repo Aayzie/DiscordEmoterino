@@ -18,10 +18,12 @@ https://github.com/Aayzie/DiscordEmoterino/releases/tag/1.0.0.1
 
 ## Usage
 
-<b>Hold down the CTRL key</b> then press <b>Enter</b> to automatically separate the emotes from your message.
+Simply <b>hold down the CTRL key</b> then press <b>Enter</b> to automatically separate the emotes from your message.
 
 For example, try typing <b>":arrow_up: TESTING MESSAGE :arrow_down:"</b>, then post the message while <b>holding down the CTRL key</b>.
 The Arrow Up emote should be sent first, then "TESTING MESSAGE", then the Arrow Down emote.
+
+## Prefix Emotes
 
 If you want to use emotes that start with a prefix instead of two colons, specify the prefix in <b>EmotePrefixes.txt</b> in the same folder as the executable file.
 For example, in order for the program to know that <b>forsenLUL</b> is an emote, you must put <b>"forsen"</b> in <b>EmotePrefixes.txt</b>.
