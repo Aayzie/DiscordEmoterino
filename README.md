@@ -37,3 +37,5 @@ e.g. in order for the program to know that <b>forsenLUL</b> is an emote, you mus
 -You can manually check if the program is on <b>system startup</b> by opening the <b>Registry Editor</b> and then going to <b>"HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"</b>
 
 -Feel free to let me know if you encounter a bug or something.
+
+-If you don't trust the release files, you can compile it yourself Okayeg
